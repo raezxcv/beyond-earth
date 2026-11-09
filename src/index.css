@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-void: #05070B;
+  --bg-midnight: #0B101B;
+  --bg-stratosphere: #121A2B;
+  --text-primary: #F2F5F8;
+  --text-silver: #C4CDD9;
+  --text-muted: #8A96A8;
+  --accent-amber: #E59846;
+  --accent-violet: #7C6AE6;
+  --accent-cyan: #56B4E9;
+  --border-subtle: rgba(196, 205, 217, 0.13);
+  --border-strong: rgba(196, 205, 217, 0.26);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    background-color: var(--bg-void);
+    color: var(--text-primary);
+    font-family: 'Schibsted Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--bg-void);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    caret-color: var(--accent-amber);
+  }
+
+  h1, h2, h3, h4, .font-editorial {
+    font-family: 'Spectral', Georgia, serif;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Browser surfaces themed to the palette */
+  ::selection {
+    background-color: rgba(229, 152, 70, 0.28);
+    color: #F2F5F8;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #05070B;
+    border-left: 1px solid rgba(196, 205, 217, 0.08);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1D2840;
+    border-radius: 0px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #E59846;
+  }
+
+  /* Accessible keyboard focus states (WCAG 2.2 AA 2.4.7 & 2.4.11) */
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-amber);
+    outline-offset: 3px;
+    scroll-margin-top: 96px;
+    scroll-margin-bottom: 64px;
+  }
+
+  a {
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+}
+
+/* Tabular numerals for scientific measurements, coordinates, and ephemeris */
+.tabular-data {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Editorial hairlines */
+.hairline-t {
+  border-top: 1px solid var(--border-subtle);
+}
+.hairline-b {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.hairline-l {
+  border-left: 1px solid var(--border-subtle);
+}
+.hairline-r {
+  border-right: 1px solid var(--border-subtle);
+}
+.hairline-box {
+  border: 1px solid var(--border-subtle);
+}
+
+/* Hardware-accelerated image plate hover gated for fine pointer devices */
+.plate-zoom {
+  transition: transform 700ms var(--ease-out), opacity 400ms var(--ease-out);
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .plate-zoom {
+    transform: scale(1.035);
+  }
+}
+
+/* Slow orbital rotation for SVG ephemeris diagrams */
+@keyframes slow-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slow-orbit-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.orbit-spin-slow {
+  animation: slow-orbit 120s linear infinite;
+  transform-origin: center;
+}
+
+.orbit-spin-reverse {
+  animation: slow-orbit-reverse 180s linear infinite;
+  transform-origin: center;
+}
+
+/* Page & section reveal transitions */
+@keyframes editorial-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-editorial-enter {
+  animation: editorial-enter 550ms var(--ease-out) both;
+}
+
+/* Reduced motion compliance (WCAG 2.3 & animate skill rule 7) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .plate-zoom,
+  .group:hover .plate-zoom {
+    transform: none !important;
+  }
+
+  .orbit-spin-slow,
+  .orbit-spin-reverse {
+    animation: none !important;
+  }
+
+  .animate-editorial-enter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
